@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using MyVideoMangement.Models;
+using MyVideoMangement.ViewModels;
 
 namespace MyVideoMangement.Controllers
 {
