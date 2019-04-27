@@ -13,7 +13,7 @@ namespace MyVideoMangement.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201904270621546_SeedUsers"; }
+            get { return "201904270709287_SeedUsers"; }
         }
         
         string IMigrationMetadata.Source

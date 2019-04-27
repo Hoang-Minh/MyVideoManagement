@@ -16,7 +16,10 @@ namespace MyVideoMangement.Controllers
             //var movieViewController = new MovieViewModel {Movies = movies};
 
             //return View(movieViewController);
-            return View();
+
+            if (User.IsInRole("CanManageMovies"))
+                return View("List");
+            return View("ReadOnlyList");
         }
 
         public ActionResult Details(int id)
