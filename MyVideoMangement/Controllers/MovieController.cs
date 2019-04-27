@@ -7,6 +7,7 @@ using MyVideoMangement.ViewModels;
 
 namespace MyVideoMangement.Controllers
 {
+    [Authorize(Roles = RoleName.CanManageMovies)]
     public class MovieController : BaseController
     {
         // GET: Movie
@@ -17,7 +18,7 @@ namespace MyVideoMangement.Controllers
 
             //return View(movieViewController);
 
-            if (User.IsInRole("CanManageMovies"))
+            if (User.IsInRole(RoleName.CanManageMovies))
                 return View("List");
             return View("ReadOnlyList");
         }
@@ -30,6 +31,7 @@ namespace MyVideoMangement.Controllers
             return View(movieViewController);
         }
 
+        
         public ActionResult New()
         {
             var emptyMovieFormViewModel = new MovieFormViewModel
@@ -66,6 +68,7 @@ namespace MyVideoMangement.Controllers
             return RedirectToAction("Index", "Movie");
         }
 
+        
         public ActionResult Edit(int id)
         {
             var movie = MyDbContext.Movies.Find(id);

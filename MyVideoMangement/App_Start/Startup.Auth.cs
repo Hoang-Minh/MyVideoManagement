@@ -54,9 +54,9 @@ namespace MyVideoMangement
             //   consumerKey: "",
             //   consumerSecret: "");
 
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            app.UseFacebookAuthentication(
+               appId: "534894007035946",
+               appSecret: "9a02ce1889b84046cedb337321e24ec4");
 
             //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             //{

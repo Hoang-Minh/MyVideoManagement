@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace MyVideoMangement.Models
@@ -8,6 +9,13 @@ namespace MyVideoMangement.Models
         [Required]
         [Display(Name = "Email")]
         public string Email { get; set; }
+
+        [Required]
+        [Display(Name = "Driving License")]
+        public string DrivingLicense { get; set; }
+
+        [Required]
+        public string Phone { get; set; }
     }
 
     public class ExternalLoginListViewModel
@@ -64,6 +72,14 @@ namespace MyVideoMangement.Models
 
     public class RegisterViewModel
     {
+        [Required]
+        [Display(Name = "Driving License")]
+        public string DrivingLicense { get; set; }
+
+        [Required]
+        [Phone]
+        public string Phone { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
