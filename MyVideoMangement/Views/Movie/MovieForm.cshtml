@@ -1,0 +1,42 @@
+﻿@model MyVideoMangement.ViewModels.MovieFormViewModel
+@{
+    ViewBag.Title = "MovieForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.Title</h2>
+
+@using (Html.BeginForm("Save", "Movie"))
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.Name)
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.Name)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.ReleaseDate)
+        @Html.TextBoxFor(x => x.ReleaseDate, "{0:d MMM yyyy}", new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.ReleaseDate)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.GenreId)
+        @Html.DropDownListFor(x => x.GenreId, new SelectList(Model.Genre, "Id", "Name"), "Select Genre", new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.GenreId)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.NumberInStock)
+        @Html.TextBoxFor(x => x.NumberInStock, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.NumberInStock)
+    </div>
+    @Html.HiddenFor(x => x.Id)
+    @Html.HiddenFor(x => x.DateAdded)
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-success">Save</button>
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
