@@ -8,7 +8,7 @@
 <form id="newRental">
     <div class="form-group">
         <label>Customer</label>
-        <input id="customer" type="text" value="" class="form-control" />
+        <input id="customer" type="text" value="" class="form-control" autocomplete="off" />
     </div>
     <div class="form-group">
         <label>Movie</label>
@@ -23,56 +23,71 @@
     <button class="btn btn-primary">Submit</button>
 </form>
 
+
+
+@*<div id="search_loader"></div>*@
+
 @section scripts
 {
     <script>
         $(document).ready(function () {
 
-            let vm = {
-                moviesId: []
-            };
-
-            $.get("/api/customers", function (data) {
-                $("#customer").typeahead(
-                    {
-                        minLength: 3,
-                        source: data,
-                        updater: function (item) {
-                            return item.name;
-                        }
-
-                    });
+            let customers = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                
+                remote: {
+                    url: '/api/customers?query=%QUERY',
+                    wildcard: '%QUERY'
+                }
             });
 
-            $.get("/api/movies",
-                function (data) {
-                    $("#movie").typeahead({
-                        minLength: 3,
-                        source: data,
-                        updater: function (item) {
-                            $("#movies").append("<li class='list-group-item'>" + item.name + "</li>");
-                            vm.moviesId.push(item.id);
-                            return "";
+            $('#customer').typeahead(
+                {
+                    minLength: 3,
+                    highlight: true
+                },
+                {
+                    name: 'customers',
+                    source: customers,   // suggestion engine is passed as the source
+                    display: function(item) {        // display: 'name' will also work
+                        return item.name;
+                    },
+                    
+                    limit: 3,
+                    templates: {
+                        notFound: '<div>Not Found</div>',
+                        pending: '<div>Loading...</div>',
+                        header: '<div>Found Records:</div>',
+                        suggestion: function(item) {
+                            return '<div>'+ item.name + " DOB: " + item.birthdate + '</div>';
                         }
-
-                    });
+                    }
                 });
 
-            $("#newRental").submit(function (e) {
-                e.preventDefault();
+            
+            
 
-                $.ajax({
-                    url: "/api/newRentals",
-                    method: "POST",
-                    data: vm
-                })
-                    .done(function () {
-                        console.log("done");
-                    })
-                    .fail(function () {
+            //var countries_suggestions = new Bloodhound({
+            //    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+            //    queryTokenizer: Bloodhound.tokenizers.whitespace,
+            //    remote: {
+            //        url: 'https://restcountries.eu/rest/v2/alpha?codes=',
+            //        prepare: function (query, settings) {
+            //            $("#search_loader").fadeIn();     // display loader
+            //            settings.url = this.url + query;
+            //            return settings;
+            //        },
+            //        filter: function (data) {
+            //            $("#search_loader").fadeOut();    // hide loader
+            //            return data;
+            //        }
+            //    },
+            //    identify: function (response) {
+            //        return response.name;
+            //    }
+            //});
 
-                    });
-            });
         });
 
 

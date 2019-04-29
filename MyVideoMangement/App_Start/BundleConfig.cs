@@ -13,7 +13,8 @@ namespace MyVideoMangement
                         "~/Scripts/bootbox.js",
                         "~/Scripts/datatables/jquery.datatables.js",
                         "~/Scripts/datatables/datatables.bootstrap.js",
-                        "~/Scripts/bootstrap3-typeahead.js"
+                        "~/Scripts/bloodhound.js",
+                        "~/Scripts/typeahead.js"
                         ));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(

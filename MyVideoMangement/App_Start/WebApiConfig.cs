@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Net.Http.Formatting;
 using System.Web.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -11,6 +10,15 @@ namespace MyVideoMangement
     {
         public static void Register(HttpConfiguration config)
         {
+            // Response returns as json so that typehead is working properly
+            GlobalConfiguration.
+                Configuration.Formatters.JsonFormatter.MediaTypeMappings
+                .Add(new RequestHeaderMapping("Accept",
+                    "text/html",
+                    StringComparison.InvariantCultureIgnoreCase,
+                    true,
+                    "application/json"));
+
             var settings = config.Formatters.JsonFormatter.SerializerSettings;
             settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             settings.Formatting = Formatting.Indented;
