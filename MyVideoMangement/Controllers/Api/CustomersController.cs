@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Http;
 using AutoMapper.QueryableExtensions;
@@ -11,8 +12,19 @@ namespace MyVideoMangement.Controllers.Api
     {
         [HttpGet]
         // GET api/Customers
-        public IHttpActionResult GetCustomers()
+        public IHttpActionResult GetCustomers(string query = null)
         {
+            //var customersQuery = MyDbContext.Customers.Include(x => x.MembershipType);
+
+            //if (!string.IsNullOrWhiteSpace(query))
+            //{
+            //    customersQuery = customersQuery.Where(x => x.Name.Contains(query));
+            //}
+
+            //var mapperProfile = new MappingProfile();
+            //var customersDto = customersQuery.ToList().Select(mapperProfile.Mapper.Map<Customer, CustomerDto>);
+
+            //return Ok(customersDto);
             return Ok(MyDbContext.Customers
                 .ProjectTo<CustomerDto>()
                 .ToList());

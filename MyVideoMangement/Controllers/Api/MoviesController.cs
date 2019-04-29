@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Http;
-using AutoMapper.QueryableExtensions;
 using MyVideoMangement.Dtos;
 using MyVideoMangement.Models;
 
@@ -11,11 +11,26 @@ namespace MyVideoMangement.Controllers.Api
     {
         // GET api/movies
         [HttpGet]
-        public IHttpActionResult GetMovies()
+        public IHttpActionResult GetMovies(string query = null)
         {
-            return Ok(MyDbContext.Movies
-                .ProjectTo<MovieDto>()
-                .ToList());
+            //return Ok(MyDbContext.Movies
+            //    .ProjectTo<MovieDto>()
+            //    .ToList());
+            var moviesQuery = MyDbContext.Movies
+                .Include(m => m.Genre)
+                .Where(x => x.NumberAvailable > 0);
+
+            if (!string.IsNullOrWhiteSpace(query))
+            {
+                moviesQuery = moviesQuery.Where(m => m.Name.Contains(query));
+
+            }
+            var mappingProfile = new MappingProfile();
+            var moviesDto = moviesQuery
+                .ToList()
+                .Select(mappingProfile.Mapper.Map<Movie, MovieDto>);
+
+            return Ok(moviesDto);
         }
 
         // GET api/movie/id

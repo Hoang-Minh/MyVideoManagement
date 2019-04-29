@@ -20,6 +20,8 @@ namespace MyVideoMangement.Models
         [Range(1, 20)]
         public int NumberInStock { get; set; }
 
+        public int NumberAvailable { get; set; }
+
         public Genre Genre { get; set; }
 
         [Required]

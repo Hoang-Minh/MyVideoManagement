@@ -17,6 +17,7 @@ namespace MyVideoMangement
                 cfg.CreateMap<MovieDto, Movie>().ForMember(x => x.Id, opt => opt.Ignore());
                 cfg.CreateMap<MembershipType, MembershipTypeDto>();
                 cfg.CreateMap<Genre, GenreDto>();
+                cfg.CreateMap<Rental, NewRentalDto>();
             });
 
             Mapper = config.CreateMapper();
