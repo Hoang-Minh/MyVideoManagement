@@ -56,11 +56,15 @@
                     
                     limit: 3,
                     templates: {
-                        notFound: '<div>Not Found</div>',
-                        pending: '<div>Loading...</div>',
-                        header: '<div>Found Records:</div>',
+                        empty: [
+                            '<div class="list-group search-results-dropdown"><div class="list-group-item">Nothing found.</div></div>'
+                        ],
+                        pending: '<div class="list-group search-results-dropdown">Loading...</div>',
+                        header: [
+                            '<div class="list-group search-results-dropdown">'
+                        ],
                         suggestion: function(item) {
-                            return '<div>'+ item.name + " DOB: " + item.birthdate + '</div>';
+                            return '<div class="list-group-item">'+ item.name + " DOB: " + item.birthdate + '</div>';
                         }
                     }
                 });
