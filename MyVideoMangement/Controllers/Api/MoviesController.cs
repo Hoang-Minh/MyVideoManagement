@@ -13,9 +13,6 @@ namespace MyVideoMangement.Controllers.Api
         [HttpGet]
         public IHttpActionResult GetMovies(string query = null)
         {
-            //return Ok(MyDbContext.Movies
-            //    .ProjectTo<MovieDto>()
-            //    .ToList());
             var moviesQuery = MyDbContext.Movies
                 .Include(m => m.Genre)
                 .Where(x => x.NumberAvailable > 0);
@@ -23,7 +20,6 @@ namespace MyVideoMangement.Controllers.Api
             if (!string.IsNullOrWhiteSpace(query))
             {
                 moviesQuery = moviesQuery.Where(m => m.Name.Contains(query));
-
             }
 
             var mappingProfile = new MappingProfile();
