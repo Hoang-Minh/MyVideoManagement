@@ -9,7 +9,7 @@
     <div class="form-group">
         <label>Customer</label>
         <div class="tt-container">
-            <input id="customer" type="text" value="" class="form-control" autocomplete="off" />
+            <input id="customer" data-rule-validCustomer="true" required type="text" value="" class="form-control" autocomplete="off" />
         </div>
 
     </div>
@@ -33,6 +33,7 @@
 
 @section scripts
 {
+    @Scripts.Render("~/bundles/jqueryval")
     <script>
         $(document).ready(function () {
             var vm = {
@@ -121,25 +122,31 @@
                     vm.movieIds.push(movie.id);
                 });
 
-            $("#newRental").submit(function (e) {
-                e.preventDefault();
+            $.validator.addMethod("validCustomer",
+                function () {
+                    console.log(vm.customerId);
+                    return vm.customerId && vm.customerId !== 0;
+                }, "Please select a valid customer");
 
-                $.ajax({
-                    url: "/api/newRentals",
-                    method: "post",
-                    contentType: 'application/json; charset=utf-8',
-                    data: JSON.stringify(vm)
-                })
-                    .done(function () {
-                        console.log("done");
+            $("#newRental").validate({
+                submitHandler: function () {
+                    e.preventDefault();
+
+                    $.ajax({
+                        url: "/api/newRentals",
+                        method: "post",
+                        contentType: 'application/json; charset=utf-8',
+                        data: JSON.stringify(vm)
                     })
-                    .fail(function () {
-                        console.log("fail");
-                    });
+                        .done(function () {
+
+                            toastr.success("Rental successfully recorded");
+                        })
+                        .fail(function () {
+                            toastr.err("Something unexpected happened");
+                        });
+                }
             });
-
         });
-
-
     </script>
 }
