@@ -8,11 +8,17 @@
 <form id="newRental">
     <div class="form-group">
         <label>Customer</label>
-        <input id="customer" type="text" value="" class="form-control" autocomplete="off" />
+        <div class="tt-container">
+            <input id="customer" type="text" value="" class="form-control" autocomplete="off" />
+        </div>
+        
     </div>
     <div class="form-group">
         <label>Movie</label>
-        <input id="movie" type="text" value="" class="form-control" />
+        <div class="tt-container">
+            <input id="movie" type="text" value="" class="form-control" />
+        </div>
+        
     </div>
     <div class="row">
         <div class="col-md-4 col-sm-4">
@@ -25,17 +31,18 @@
 
 
 
-@*<div id="search_loader"></div>*@
-
 @section scripts
 {
     <script>
         $(document).ready(function () {
+            let vm = {
+                moviesIds: []
+            };
 
             let customers = new Bloodhound({
                 datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
                 queryTokenizer: Bloodhound.tokenizers.whitespace,
-                
+
                 remote: {
                     url: '/api/customers?query=%QUERY',
                     wildcard: '%QUERY'
@@ -50,10 +57,10 @@
                 {
                     name: 'customers',
                     source: customers,   // suggestion engine is passed as the source
-                    display: function(item) {        // display: 'name' will also work
+                    display: function (item) {        // display: 'name' will also work
                         return item.name;
                     },
-                    
+
                     limit: 3,
                     templates: {
                         empty: [
@@ -63,34 +70,54 @@
                         header: [
                             '<div class="list-group search-results-dropdown">'
                         ],
-                        suggestion: function(item) {
-                            return '<div class="list-group-item">'+ item.name + " DOB: " + item.birthdate + '</div>';
+                        suggestion: function (item) {
+                            return '<div class="list-group-item">' + item.name + " DOB: " + item.birthdate + '</div>';
                         }
                     }
+                }).on("typeahead:select", function (e, customer) {
+                    vm.customerId = customer.id;
                 });
 
-            
-            
 
-            //var countries_suggestions = new Bloodhound({
-            //    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
-            //    queryTokenizer: Bloodhound.tokenizers.whitespace,
-            //    remote: {
-            //        url: 'https://restcountries.eu/rest/v2/alpha?codes=',
-            //        prepare: function (query, settings) {
-            //            $("#search_loader").fadeIn();     // display loader
-            //            settings.url = this.url + query;
-            //            return settings;
-            //        },
-            //        filter: function (data) {
-            //            $("#search_loader").fadeOut();    // hide loader
-            //            return data;
-            //        }
-            //    },
-            //    identify: function (response) {
-            //        return response.name;
-            //    }
-            //});
+            let movies = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+
+                remote: {
+                    url: '/api/movies?query=%QUERY',
+                    wildcard: '%QUERY'
+                }
+            });
+
+            $('#movie').typeahead(
+                {
+                    minLength: 3,
+                    highlight: true
+                },
+                {
+                    name: 'movies',
+                    source: movies,   // suggestion engine is passed as the source
+                    display: function (item) {        // display: 'name' will also work
+                        return item.name;
+                    },
+
+                    limit: 3,
+                    templates: {
+                        empty: [
+                            '<div class="list-group search-results-dropdown"><div class="list-group-item">Nothing found.</div></div>'
+                        ],
+                        pending: '<div class="list-group search-results-dropdown">Loading...</div>',
+
+                        suggestion: function (item) {
+                            return '<div class="list-group-item">' + item.name + '</div>';
+                        }
+                    }
+                }).on("typeahead:select", function (e, movie) {
+                    $("#movie").typeahead("val", "");
+                    $("#movies").append("<li>" + movie.name + "</li>");
+                    
+                    vm.moviesId.push(movie.id);
+            });
 
         });
 

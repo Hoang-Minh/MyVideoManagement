@@ -25,6 +25,7 @@ namespace MyVideoMangement.Controllers.Api
                 moviesQuery = moviesQuery.Where(m => m.Name.Contains(query));
 
             }
+
             var mappingProfile = new MappingProfile();
             var moviesDto = moviesQuery
                 .ToList()

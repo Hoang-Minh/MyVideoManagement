@@ -2,7 +2,6 @@
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Http;
-using AutoMapper.QueryableExtensions;
 using MyVideoMangement.Dtos;
 using MyVideoMangement.Models;
 
@@ -25,9 +24,6 @@ namespace MyVideoMangement.Controllers.Api
             var customersDto = customersQuery.ToList().Select(mapperProfile.Mapper.Map<Customer, CustomerDto>);
 
             return Ok(customersDto);
-            //return Ok(MyDbContext.Customers
-            //    .ProjectTo<CustomerDto>()
-            //    .ToList());
         }
 
         // GET api/Customers/id
@@ -45,7 +41,7 @@ namespace MyVideoMangement.Controllers.Api
         }
 
         // POST api/Customers
-        [System.Web.Http.HttpPost]
+        [HttpPost]
         public IHttpActionResult CreateCustomer(CustomerDto customerDto)
         {
             if (!ModelState.IsValid) return BadRequest();
@@ -60,7 +56,7 @@ namespace MyVideoMangement.Controllers.Api
         }
 
         // PUT api/customers/1
-        [System.Web.Http.HttpPut]
+        [HttpPut]
         public IHttpActionResult UpdateCustomer(int id, CustomerDto customerDto)
         {
             if (!ModelState.IsValid) return BadRequest();
@@ -77,7 +73,7 @@ namespace MyVideoMangement.Controllers.Api
         }
 
         // DELETE api/customers/1
-        [System.Web.Http.HttpDelete]
+        [HttpDelete]
         public IHttpActionResult DeleteCustomer(int id)
         {
             var customerInDb = MyDbContext.Customers.SingleOrDefault(x => x.Id == id);
